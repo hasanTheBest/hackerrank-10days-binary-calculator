@@ -1,25 +1,21 @@
-// button references
-
+// Dom references
 const result = document.getElementById("res");
 const btnWrapper = document.getElementById("btns");
-const btn0 = document.getElementById("btn0");
-const btn1 = document.getElementById("btn1");
-const btnSum = document.getElementById("btnSum");
-const btnSub = document.getElementById("btnSub");
-const btnMul = document.getElementById("btnMul");
-const btnDiv = document.getElementById("btnDiv");
 const btnEql = document.getElementById("btnEql");
 const btnClr = document.getElementById("btnClr");
 
+// Listen any click event of the children
 btnWrapper.addEventListener("click", function (e) {
   result.innerHTML += e.target.innerText;
 });
 
+// Clear result display content
 btnClr.addEventListener("click", function (e) {
-  result.innerHTML = "";
   e.stopImmediatePropagation();
+  result.innerHTML = "";
 });
 
+// Listen click event to start operation
 btnEql.addEventListener("click", function (e) {
   e.stopImmediatePropagation();
 
@@ -27,33 +23,36 @@ btnEql.addEventListener("click", function (e) {
 
   const operator = findOperator(displayText);
 
-  const operand1 = Number(
-    Number(displayText.slice(0, displayText.indexOf(operator))).toString(10)
+  const operand1 = parseInt(
+    displayText.slice(0, displayText.indexOf(operator)),
+    2
   );
-  console.log("operand1", displayText.slice(0, displayText.indexOf(operator)));
-  const operand2 = Number(
-    Number(displayText.slice(displayText.indexOf(operator) + 1)).toString(10)
-  );
-  console.log("operand2", operand2);
 
-  switch (true) {
-    case operator == "+":
+  const operand2 = parseInt(
+    displayText.slice(displayText.indexOf(operator) + 1),
+    2
+  );
+
+  //actual  operation
+  switch (operator) {
+    case "+":
       result.innerHTML = Number(operand1 + operand2).toString(2);
       break;
-    case operator == "-":
-      result.innerHTML = Number(operand1 + operand2).toString(2);
+    case "-":
+      result.innerHTML = Number(operand1 - operand2).toString(2);
       break;
-    case operator == "*":
-      result.innerHTML = Number(operand1 + operand2).toString(2);
+    case "*":
+      result.innerHTML = Number(operand1 * operand2).toString(2);
       break;
-    case operator == "/":
-      result.innerHTML = Number(operand1 + operand2).toString(2);
+    case "/":
+      result.innerHTML = Number(operand1 / operand2).toString(2);
       break;
     default:
       result.innerHTML = "Syntax Error";
   }
 });
 
+// find operator to operate
 function findOperator(text) {
   let sign;
   if (text.includes("+")) {
